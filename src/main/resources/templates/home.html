@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{layout::head}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - Distribuidora Saire</title>
+  <link rel="stylesheet" href="/css/bootstrap/bootstrap.css">
+  <script src="/js/bootstrap/bootstrap.bundle.js" defer></script>
+</head>
+<body>
+<!-- NAVBAR -->
+<nav th:insert="~{layout::navbar}"></nav>
+
+<!-- DASHBOARD HOME -->
+<div class="container my-5">
+  <h2 class="mb-4 text-center fw-bold">Panel de Control - Distribuidora Saire</h2>
+
+  <div class="row g-4 text-center">
+    <div class="col-md-3">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title text-muted">Productos</h5>
+          <p class="display-6 fw-semibold text-primary">--</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title text-muted">Clientes</h5>
+          <p class="display-6 fw-semibold text-success">--</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title text-muted">Pedidos</h5>
+          <p class="display-6 fw-semibold text-warning">--</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title text-muted">Proveedores</h5>
+          <p class="display-6 fw-semibold text-danger">--</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col-lg-6 mb-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-white fw-bold">Últimos Pedidos</div>
+        <div class="card-body">
+          <p class="text-muted fst-italic">Aquí se mostrarán los pedidos más recientes.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 mb-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-white fw-bold">Productos con Bajo Stock</div>
+        <div class="card-body">
+          <p class="text-muted fst-italic">Lista de productos que necesitan reposición.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+
+</html>

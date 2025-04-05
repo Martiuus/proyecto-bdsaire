@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import pe.edu.idat.proyecto_bdsaire.model.LoginModel;
 
 @Controller
-public class PrincipalController {
+public class LoginController {
 
     @GetMapping("/login")
     public String frmLogin(Model model){
@@ -28,5 +28,4 @@ public class PrincipalController {
             return "login"; // Vuelve al login con un mensaje de error
         }
     }
-
 }
