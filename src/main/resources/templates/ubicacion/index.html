@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{layout::head}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Ubicaciones</title>
+</head>
+<body class="bg-light">
+<nav th:insert="~{layout::navbar}"></nav>
+<div class="container mt-5">
+  <div class="card shadow p-4">
+    <h1 class="text-center">UBICACIONES</h1>
+
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+      <span th:text="${error}"></span>
+    </div>
+
+    <form th:action="@{/ubicacion/save}" method="post" class="mb-4" th:object="${ubicacion}">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="nombre" class="form-label">Nombre:</label>
+          <input type="text" id="nombre" th:field="*{nombre}" class="form-control" required>
+        </div>
+        <div class="col-md-6">
+          <label for="direccion" class="form-label">Dirección:</label>
+          <input type="text" id="direccion" th:field="*{direccion}" class="form-control" required>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="descripcion" class="form-label">Descripción:</label>
+        <textarea id="descripcion" th:field="*{descripcion}" class="form-control" rows="3"></textarea>
+      </div>
+      <div class="text-end">
+        <button type="submit" class="btn btn-primary">Agregar Ubicación</button>
+      </div>
+    </form>
+
+    <h2 class="text-center">Lista de Ubicaciones</h2>
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Dirección</th>
+          <th>Descripción</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ubi : ${ubicaciones}">
+          <td th:text="${ubi.ubicacionid}"></td>
+          <td th:text="${ubi.nombre}"></td>
+          <td th:text="${ubi.direccion}"></td>
+          <td th:text="${ubi.descripcion}"></td>
+          <td>
+            <a class="btn btn-warning btn-sm" th:href="@{/ubicacion/edit/{id}(id=${ubi.ubicacionid})}">Editar</a>
+            <a class="btn btn-danger btn-sm" th:href="@{/ubicacion/eliminar/{id}(id=${ubi.ubicacionid})}" onclick="return confirm('¿Estás seguro de eliminar esta ubicación?');">Eliminar</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div th:replace="~{layout :: search-script}"></div>
+</body>
+</html>

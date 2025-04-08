@@ -1,8 +1,8 @@
 package pe.edu.idat.proyecto_bdsaire.model;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "ordenfinal")
@@ -15,9 +15,15 @@ public class OrdenFinalModel {
     @JoinColumn(name = "clienteid")
     private ClienteModel cliente;
 
-    private LocalDateTime fecha;
-    private String estado;
+    private LocalDate fecha;
+
+    @Enumerated(EnumType.STRING)
+    private EstadoOrden estado;
+
     private Double total;
+
+    @OneToMany(mappedBy = "ordenfinal", cascade = CascadeType.ALL)
+    private List<DetallePedidoModel> detalles;
 
     public Integer getOrdenfinalid() {
         return ordenfinalid;
@@ -35,19 +41,19 @@ public class OrdenFinalModel {
         this.cliente = cliente;
     }
 
-    public LocalDateTime getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDateTime fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
-    public String getEstado() {
+    public EstadoOrden getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoOrden estado) {
         this.estado = estado;
     }
 
@@ -57,5 +63,13 @@ public class OrdenFinalModel {
 
     public void setTotal(Double total) {
         this.total = total;
+    }
+
+    public List<DetallePedidoModel> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetallePedidoModel> detalles) {
+        this.detalles = detalles;
     }
 }

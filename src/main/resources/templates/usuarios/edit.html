@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{layout::head}">
+    <meta charset="UTF-8">
+    <title>Editar Usuario</title>
+</head>
+<body>
+<nav th:insert="~{layout::navbar}"></nav>
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header text-bg-secondary">
+            Editar Usuario
+        </div>
+        <div class="card-body">
+            <form th:action="@{/usuarios/update}" th:object="${usuario}" method="post" class="row g-3">
+                <input type="hidden" th:field="*{usuarioid}" />
+
+                <div class="col-md-6">
+                    <label for="nombre" class="form-label">Nombre:</label>
+                    <input type="text" id="nombre" class="form-control" th:field="*{nombre}" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" id="email" class="form-control" th:field="*{email}" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="contrasena" class="form-label">Contraseña:</label>
+                    <input type="password" id="contrasena" class="form-control" th:field="*{contrasena}" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="rol" class="form-label">Rol:</label>
+                    <select id="rol" th:field="*{rol}" class="form-select" required>
+                        <option value="admin">Admin</option>
+                        <option value="empleado">Empleado</option>
+                    </select>
+                </div>
+
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

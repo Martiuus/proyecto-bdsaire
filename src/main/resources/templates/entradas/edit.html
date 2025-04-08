@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{layout::head}">
+  <meta charset="UTF-8">
+  <title>Editar Entrada</title>
+</head>
+<body>
+<nav th:insert="~{layout::navbar}"></nav>
+<div class="container mt-5">
+  <div class="card shadow">
+    <div class="card-header text-bg-secondary">
+      Editar Entrada de Inventario
+    </div>
+    <div class="card-body">
+      <form th:action="@{/entradas/update}" method="post" th:object="${entrada}" class="row g-3">
+
+        <input type="hidden" th:field="*{entradaid}" />
+
+        <div class="col-md-4">
+          <label for="productoId" class="form-label">Producto:</label>
+          <select class="form-select" id="productoId" name="productoId" required>
+            <option th:each="p : ${productos}" th:value="${p.productoid}" th:text="${p.nombre}"
+                    th:selected="${p.productoid} == ${entrada.producto.productoid}"></option>
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label for="proveedorId" class="form-label">Proveedor:</label>
+          <select class="form-select" id="proveedorId" name="proveedorId" required>
+            <option th:each="prov : ${proveedores}" th:value="${prov.proveedorid}" th:text="${prov.nombre}"
+                    th:selected="${prov.proveedorid} == ${entrada.proveedor.proveedorid}"></option>
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label for="usuarioId" class="form-label">Usuario:</label>
+          <select class="form-select" id="usuarioId" name="usuarioId" required>
+            <option th:each="u : ${usuarios}"
+                    th:value="${u.usuarioid}"
+                    th:text="${u.nombre}"
+                    th:selected="${u.usuarioid == entrada.usuario.usuarioid}">
+            </option>
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label for="cantidad" class="form-label">Cantidad:</label>
+          <input type="number" class="form-control" id="cantidad" th:field="*{cantidad}" min="1" required />
+        </div>
+
+        <div class="col-md-4">
+          <label for="fecha" class="form-label">Fecha de Entrada:</label>
+          <input type="date" class="form-control" id="fecha" name="fecha"
+                 th:field="*{fecha}" required />
+        </div>
+
+        <div class="col-12 text-end">
+          <button type="submit" class="btn btn-primary">Actualizar</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+<div th:replace="~{layout :: search-script}"></div>
+</body>
+</html>

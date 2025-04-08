@@ -1,9 +1,7 @@
 package pe.edu.idat.proyecto_bdsaire.model;
 
-
-import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "entradas")
@@ -21,7 +19,7 @@ public class EntradasModel {
     private ProveedorModel proveedor;
 
     private Integer cantidad;
-    private LocalDateTime fecha;
+    private LocalDate fecha;
 
     @ManyToOne
     @JoinColumn(name = "usuarioid", nullable = false)
@@ -59,11 +57,11 @@ public class EntradasModel {
         this.cantidad = cantidad;
     }
 
-    public LocalDateTime getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDateTime fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{layout::head}">
+    <meta charset="UTF-8">
+    <title>Editar Categoría</title>
+</head>
+<body>
+<nav th:insert="~{layout::navbar}"></nav>
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header text-bg-secondary">
+            Editar Categoría
+        </div>
+        <div class="card-body">
+            <form th:action="@{/categorias/update}" th:object="${categoria}" method="post" class="row g-3">
+                <input type="hidden" th:field="*{categoriaid}" />
+
+                <div class="col-md-6">
+                    <label for="nombre" class="form-label">Nombre:</label>
+                    <input type="text" id="nombre" class="form-control" th:field="*{nombre}" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="descripcion" class="form-label">Descripción:</label>
+                    <input type="text" id="descripcion" class="form-control" th:field="*{descripcion}" required>
+                </div>
+
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div th:replace="~{layout :: search-script}"></div>
+</body>
+</html>

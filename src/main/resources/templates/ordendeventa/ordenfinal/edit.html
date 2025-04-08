@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{layout::head}">
+  <meta charset="UTF-8">
+  <title>Actualizar Orden Final</title>
+  <link rel="stylesheet" href="/css/bootstrap/bootstrap.css" />
+</head>
+<body>
+<nav th:insert="~{layout::navbar}"></nav>
+<br />
+<div class="container mt-5">
+  <div class="card shadow">
+    <div class="card-header text-bg-secondary">
+      Mantenimiento de Orden Final
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Actualizar detalle de orden final</h5>
+      <hr />
+
+      <div th:if="${error}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+      </div>
+
+      <form th:action="@{/ordenfinal/update}" method="post" th:object="${ordenfinal}">
+        <input type="hidden" th:field="*{ordenfinalid}" />
+
+        <div class="row mb-3">
+          <!-- Select de cliente por nombre -->
+          <div class="col-md-6">
+            <div class="col-md-6">
+              <label for="clienteid">Cliente:</label>
+              <input list="clientes" name="clienteid" id="clienteid" class="form-control"
+                     th:value="${ordenfinal.cliente != null ? ordenfinal.cliente.clienteid : ''}" required />
+              <datalist id="clientes">
+                <option th:each="c : ${clientes}"
+                        th:value="${c.clienteid}"
+                        th:text="${c.clienteid + ' - ' + c.nombre}"></option>
+              </datalist>
+            </div>
+          </div>
+
+          <!-- Estado -->
+          <div class="col-md-6">
+            <label for="estado">Estado</label>
+            <select class="form-select" id="estado" name="estado" th:field="*{estado}" required>
+              <option th:each="estado : ${T(pe.edu.idat.proyecto_bdsaire.model.EstadoOrden).values()}"
+                      th:value="${estado}" th:text="${estado}"></option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <!-- Total -->
+          <div class="col-md-6">
+            <label for="txttotal">Total</label>
+            <input type="number" class="form-control" id="txttotal" th:field="*{total}" placeholder="Total" step="0.01" />
+          </div>
+
+          <!-- Fecha -->
+          <div class="col-md-6">
+            <label for="fecha">Fecha</label>
+            <input type="date" class="form-control" id="fecha" name="fecha" th:field="*{fecha}" placeholder="Fecha" required />
+          </div>
+        </div>
+
+        <div class="text-end">
+          <button type="submit" class="btn btn-primary">Actualizar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div th:replace="~{layout :: search-script}"></div>
+</body>
+</html>

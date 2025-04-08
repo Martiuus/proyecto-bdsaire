@@ -1,8 +1,7 @@
 package pe.edu.idat.proyecto_bdsaire.model;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "salida")
@@ -16,9 +15,7 @@ public class SalidaModel {
     private ProductoModel producto;
 
     private Integer cantidad;
-
-    @Column(nullable = false)
-    private LocalDateTime fecha;
+    private LocalDate fecha;
 
     @Enumerated(EnumType.STRING)
     private Motivo motivo;
@@ -51,11 +48,11 @@ public class SalidaModel {
         this.cantidad = cantidad;
     }
 
-    public LocalDateTime getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDateTime fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 

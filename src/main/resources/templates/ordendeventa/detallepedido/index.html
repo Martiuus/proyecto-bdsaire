@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{layout::head}">
+  <meta charset="UTF-8">
+  <title>Gestión de Detalles de Pedido</title>
+</head>
+<body>
+<nav th:insert="~{layout::navbar}"></nav>
+<div class="container mt-5">
+  <div class="card shadow p-4">
+    <h1 class="text-center">DETALLES DE PEDIDO</h1>
+
+    <form th:action="@{/detallepedido/save}" method="post" th:object="${detalle}">
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label for="ordenfinalid" class="form-label">Orden Final:</label>
+          <select id="ordenfinalid" class="form-select" th:field="*{ordenfinal}" required>
+            <option th:each="o : ${ordenes}" th:value="${o}" th:text="${o.ordenfinalid}">Orden</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="productoid" class="form-label">Producto:</label>
+          <select id="productoid" class="form-select" th:field="*{producto}" required>
+            <option th:each="p : ${productos}" th:value="${p}" th:text="${p.nombre}">Producto</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label for="cantidad" class="form-label">Cantidad:</label>
+          <input id="cantidad" type="number" class="form-control" th:field="*{cantidad}" required />
+        </div>
+        <div class="col-md-2">
+          <label for="precio" class="form-label">Precio:</label>
+          <input id="precio" type="number" class="form-control" th:field="*{precio}" step="0.01" required />
+        </div>
+      </div>
+      <div class="text-end">
+        <button type="submit" class="btn btn-primary">Registrar</button>
+      </div>
+    </form>
+
+    <h2 class="text-center mt-4">Lista de Detalles</h2>
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Orden</th>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Precio</th>
+        <th>Subtotal</th>
+        <th>Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="d : ${detalles}">
+        <td th:text="${d.detallepedidoid}"></td>
+        <td th:text="${d.ordenfinal.ordenfinalid}"></td>
+        <td th:text="${d.producto.nombre}"></td>
+        <td th:text="${d.cantidad}"></td>
+        <td th:text="${d.precio}"></td>
+        <td th:text="${d.subtotal}"></td>
+        <td>
+          <a class="btn btn-warning btn-sm" th:href="@{/detallepedido/edit/{id}(id=${d.detallepedidoid})}">Editar</a>
+          <a class="btn btn-danger btn-sm" th:href="@{/detallepedido/eliminar/{id}(id=${d.detallepedidoid})}" onclick="return confirm('¿Estás seguro de eliminar este detalle?');">Eliminar</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div th:replace="~{layout :: search-script}"></div>
+</body>
+</html>

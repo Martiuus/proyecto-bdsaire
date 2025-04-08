@@ -10,8 +10,8 @@ public class DetallePedidoModel {
     private Integer detallepedidoid;
 
     @ManyToOne
-    @JoinColumn(name = "pedidoid")
-    private PedidoModel pedido;
+    @JoinColumn(name = "ordenfinalid")
+    private OrdenFinalModel ordenfinal;
 
     @ManyToOne
     @JoinColumn(name = "productoid")
@@ -20,7 +20,7 @@ public class DetallePedidoModel {
     private Integer cantidad;
     private Double precio;
 
-    @Column(columnDefinition = "DECIMAL(10,2) GENERATED ALWAYS AS (cantidad * precio) STORED")
+    @Column(nullable = false)
     private Double subtotal;
 
     public Integer getDetallepedidoid() {
@@ -31,12 +31,12 @@ public class DetallePedidoModel {
         this.detallepedidoid = detallepedidoid;
     }
 
-    public PedidoModel getPedido() {
-        return pedido;
+    public OrdenFinalModel getOrdenfinal() {
+        return ordenfinal;
     }
 
-    public void setPedido(PedidoModel pedido) {
-        this.pedido = pedido;
+    public void setOrdenfinal(OrdenFinalModel ordenfinal) {
+        this.ordenfinal = ordenfinal;
     }
 
     public ProductoModel getProducto() {

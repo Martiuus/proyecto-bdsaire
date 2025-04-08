@@ -1,17 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{layout::head}">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home - Distribuidora Saire</title>
-  <link rel="stylesheet" href="/css/bootstrap/bootstrap.css">
-  <script src="/js/bootstrap/bootstrap.bundle.js" defer></script>
-</head>
+<head th:replace="~{layout :: head}"></head>
 <body>
-<!-- NAVBAR -->
-<nav th:insert="~{layout::navbar}"></nav>
+<nav th:replace="~{layout :: navbar}"></nav>
 
-<!-- DASHBOARD HOME -->
+<!-- CONTENIDO DEL HOME -->
 <div class="container my-5">
   <h2 class="mb-4 text-center fw-bold">Panel de Control - Distribuidora Saire</h2>
 
@@ -20,7 +13,7 @@
       <div class="card shadow-sm border-0">
         <div class="card-body">
           <h5 class="card-title text-muted">Productos</h5>
-          <p class="display-6 fw-semibold text-primary">--</p>
+          <p class="display-6 fw-semibold text-primary" th:text="${totalProductos}">0</p>
         </div>
       </div>
     </div>
@@ -28,7 +21,7 @@
       <div class="card shadow-sm border-0">
         <div class="card-body">
           <h5 class="card-title text-muted">Clientes</h5>
-          <p class="display-6 fw-semibold text-success">--</p>
+          <p class="display-6 fw-semibold text-success" th:text="${totalClientes}">0</p>
         </div>
       </div>
     </div>
@@ -36,7 +29,7 @@
       <div class="card shadow-sm border-0">
         <div class="card-body">
           <h5 class="card-title text-muted">Pedidos</h5>
-          <p class="display-6 fw-semibold text-warning">--</p>
+          <p class="display-6 fw-semibold text-warning" th:text="${totalPedidos}">0</p>
         </div>
       </div>
     </div>
@@ -44,7 +37,7 @@
       <div class="card shadow-sm border-0">
         <div class="card-body">
           <h5 class="card-title text-muted">Proveedores</h5>
-          <p class="display-6 fw-semibold text-danger">--</p>
+          <p class="display-6 fw-semibold text-danger" th:text="${totalProveedores}">0</p>
         </div>
       </div>
     </div>
@@ -54,21 +47,29 @@
     <div class="col-lg-6 mb-4">
       <div class="card shadow-sm border-0">
         <div class="card-header bg-white fw-bold">Últimos Pedidos</div>
-        <div class="card-body">
-          <p class="text-muted fst-italic">Aquí se mostrarán los pedidos más recientes.</p>
-        </div>
+        <ul class="list-group list-group-flush" th:if="${#lists.isEmpty(ultimosPedidos)} == false">
+          <li class="list-group-item" th:each="pedido : ${ultimosPedidos}" th:if="${pedido.producto != null}">
+            Pedido ID: <span th:text="${pedido.detallepedidoid}"></span> |
+            Producto: <span th:text="${pedido.producto.nombre}">Nombre</span> |
+            Cantidad: <span th:text="${pedido.cantidad}"></span>
+          </li>
+        </ul>
+        <p class="text-muted fst-italic" th:if="${#lists.isEmpty(ultimosPedidos)}">No hay pedidos recientes.</p>
       </div>
     </div>
     <div class="col-lg-6 mb-4">
       <div class="card shadow-sm border-0">
         <div class="card-header bg-white fw-bold">Productos con Bajo Stock</div>
-        <div class="card-body">
-          <p class="text-muted fst-italic">Lista de productos que necesitan reposición.</p>
-        </div>
+        <ul class="list-group list-group-flush" th:if="${#lists.isEmpty(bajoStock)} == false">
+          <li class="list-group-item" th:each="producto : ${bajoStock}">
+            <strong th:text="${producto.nombre}">Nombre</strong> - Stock: <span th:text="${producto.cantidad}">0</span>
+          </li>
+        </ul>
+        <p class="text-muted fst-italic" th:if="${#lists.isEmpty(bajoStock)}">No hay productos con bajo stock.</p>
       </div>
     </div>
   </div>
 </div>
+<div th:replace="~{layout :: search-script}"></div>
 </body>
-
 </html>

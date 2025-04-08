@@ -1,14 +1,19 @@
 package pe.edu.idat.proyecto_bdsaire.controller;
 
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import pe.edu.idat.proyecto_bdsaire.model.LoginModel;
+import pe.edu.idat.proyecto_bdsaire.model.UsuarioModel;
+import pe.edu.idat.proyecto_bdsaire.repository.UsuarioRepository;
 
 @Controller
 public class LoginController {
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @GetMapping("/login")
     public String frmLogin(Model model){
@@ -17,15 +22,24 @@ public class LoginController {
     }
 
     @PostMapping("/logincontrol")
-    public String login(@ModelAttribute("loginmodel") LoginModel loginModel, Model model) {
-        String usuarioCorrecto = "admin";
-        String contraseñaCorrecta = "1234";
+    public String login(@ModelAttribute("loginmodel") LoginModel loginModel,
+                        Model model,
+                        HttpSession session) {
 
-        if (loginModel.getUsuario().equals(usuarioCorrecto) && loginModel.getContraseña().equals(contraseñaCorrecta)) {
-            return "redirect:/home"; // Si las credenciales son correctas, va al home
-        } else {
+        UsuarioModel usuario = usuarioRepository.findById(loginModel.getUsuario()).orElse(null);
+
+        if (usuario == null || !usuario.getContrasena().equals(loginModel.getContraseña())) {
             model.addAttribute("error", "Usuario o contraseña incorrectos");
-            return "login"; // Vuelve al login con un mensaje de error
+            return "login";
         }
+
+        session.setAttribute("usuario", usuario);
+        return "redirect:/home";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login";
     }
 }

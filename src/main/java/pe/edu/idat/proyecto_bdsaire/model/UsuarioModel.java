@@ -3,33 +3,37 @@ package pe.edu.idat.proyecto_bdsaire.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-
 @Entity
 @Table(name = "usuario")
 public class UsuarioModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer usuarioid;
+    private String usuarioid;
 
     private String nombre;
 
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = false)
     private String contrasena;
 
     @Enumerated(EnumType.STRING)
     private Rol rol;
 
-    @Column(name = "fechacreacion", updatable = false)
     private LocalDateTime fechacreacion;
 
-    public Integer getUsuarioid() {
+    public LocalDateTime getFechacreacion() {
+        return fechacreacion;
+    }
+
+    public void setFechacreacion(LocalDateTime fechacreacion) {
+        this.fechacreacion = fechacreacion;
+    }
+
+    public String getUsuarioid() {
         return usuarioid;
     }
 
-    public void setUsuarioid(Integer usuarioid) {
+    public void setUsuarioid(String usuarioid) {
         this.usuarioid = usuarioid;
     }
 
@@ -63,13 +67,5 @@ public class UsuarioModel {
 
     public void setRol(Rol rol) {
         this.rol = rol;
-    }
-
-    public LocalDateTime getFechacreacion() {
-        return fechacreacion;
-    }
-
-    public void setFechacreacion(LocalDateTime fechacreacion) {
-        this.fechacreacion = fechacreacion;
     }
 }

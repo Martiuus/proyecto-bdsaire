@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{layout::head}">
+    <meta charset="UTF-8">
+    <title>Editar Salida</title>
+</head>
+<body>
+<nav th:insert="~{layout::navbar}"></nav>
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header text-bg-secondary">
+            Editar Salida de Inventario
+        </div>
+        <div class="card-body">
+            <form th:action="@{/salidas/update}" th:object="${salida}" method="post" class="row g-3">
+                <input type="hidden" th:field="*{salidaid}" />
+
+                <div class="col-md-4">
+                    <label for="producto" class="form-label">Producto:</label>
+                    <select id="producto" class="form-select" name="productoId" required>
+                        <option th:each="prod : ${productos}" th:value="${prod.productoid}" th:text="${prod.nombre}"
+                                th:selected="${prod.productoid == salida.producto.productoid}">Producto</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="usuario" class="form-label">Usuario:</label>
+                    <select id="usuario" class="form-select" name="usuarioId" required>
+                        <option th:each="user : ${usuarios}" th:value="${user.usuarioid}" th:text="${user.nombre}"
+                                th:selected="${user.usuarioid == salida.usuario.usuarioid}"></option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="motivo" class="form-label">Motivo:</label>
+                    <select id="motivo" class="form-select" th:field="*{motivo}" required>
+                        <option th:each="motivo : ${motivos}" th:value="${motivo}" th:text="${motivo}"
+                                th:selected="${motivo == salida.motivo}">Motivo</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="cantidad" class="form-label">Cantidad:</label>
+                    <input id="cantidad" type="number" class="form-control" th:field="*{cantidad}" required />
+                </div>
+
+                <div class="col-md-6">
+                    <label for="fecha" class="form-label">Fecha:</label>
+                    <input id="fecha" type="date" class="form-control" th:field="*{fecha}" required />
+                </div>
+
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div th:replace="~{layout :: search-script}"></div>
+</body>
+</html>

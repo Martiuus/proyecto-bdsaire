@@ -3,7 +3,7 @@
 <head th:fragment="head">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Distribuidora Saire</title>
+    <title>Distribuidora Saire</title>
     <link rel="stylesheet" href="/css/bootstrap/bootstrap.css">
     <script src="/js/bootstrap/bootstrap.bundle.js" defer></script>
     <style>
@@ -58,13 +58,36 @@
           background-color: #1abc9c;
           color: white;
         }
+
+        #searchResults {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          z-index: 1050;
+          width: 100%;
+          background: white;
+          border: 1px solid #ccc;
+          border-radius: 0.375rem;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        #searchResults a {
+          padding: 0.5rem 1rem;
+          display: block;
+          color: #2c3e50;
+          text-decoration: none;
+        }
+
+        #searchResults a:hover {
+          background-color: #f0f0f0;
+        }
     </style>
 </head>
 <body>
-<!-- NAVBAR -->
 <nav th:fragment="navbar" class="navbar navbar-expand-lg shadow-sm bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand text-white" href="#">SAIRE</a>
+        <a class="navbar-brand text-white" th:href="@{/home}">SAIRE</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -73,44 +96,104 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0 text-center">
-                <li class="nav-item"><a class="nav-link active" href="home">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="clientes">Clientes</a></li>
-                <li class="nav-item"><a class="nav-link" href="proveedores">Proveedores</a></li>
+                <li class="nav-item"><a class="nav-link active" th:href="@{/home}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/clientes}">Clientes</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/proveedores}">Proveedores</a></li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                        Productos
-                    </a>
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Productos</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="categoria">Categorias</a></li>
-                        <li><a class="dropdown-item" href="agregarproductos">Agregar Productos</a></li>
+                        <li><a class="dropdown-item" th:href="@{/categorias}">Lista de Categorías</a></li>
+                        <li><a class="dropdown-item" th:href="@{/productos}">Lista de Productos</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                        Orden de Venta
-                    </a>
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Orden de Venta</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="detallepedido">Detalles de Pedido</a></li>
-                        <li><a class="dropdown-item" href="ordenfinal">Orden Final</a></li>
+                        <li><a class="dropdown-item" th:href="@{/detallepedido}">Detalles de Pedido</a></li>
+                        <li><a class="dropdown-item" th:href="@{/ordenfinal}">Orden Final</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                        Inventario
-                    </a>
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Inventario</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="ubicacion">Movimientos</a></li>
-                        <li><a class="dropdown-item" href="entradas">Entradas de Inventario</a></li>
-                        <li><a class="dropdown-item" href="salidas">Salidas de Inventario</a></li>
+                        <li><a class="dropdown-item" th:href="@{/ubicacion}">Movimientos</a></li>
+                        <li><a class="dropdown-item" th:href="@{/entradas}">Entradas de Inventario</a></li>
+                        <li><a class="dropdown-item" th:href="@{/salidas}">Salidas de Inventario</a></li>
                     </ul>
+                </li>
+                <li class="nav-item"
+                    th:if="${session.usuario != null and session.usuario.rol.name() == 'admin'}">
+                    <a class="nav-link" th:href="@{/usuarios}">Usuarios</a>
                 </li>
             </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Buscar</button>
+            <form class="d-flex ms-4" role="search">
+                <div class="position-relative w-100">
+                    <input id="searchInput" class="form-control me-2" type="search"
+                           placeholder="Buscar vista..." oninput="filterRoutes()" autocomplete="off">
+                    <div id="searchResults" class="list-group"></div>
+                </div>
             </form>
+
+            <div class="d-flex align-items-center ms-4" th:if="${session.usuario != null}">
+                <div class="text-white me-3">
+                    Hola, <strong th:text="${session.usuario.nombre}">Usuario</strong>
+                </div>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn-outline-light btn-sm">Cerrar sesión</button>
+                </form>
+            </div>
         </div>
     </div>
 </nav>
+
+<div th:fragment="search-script">
+    <script>
+        const routes = [
+          { name: 'Home', url: '/home' },
+          { name: 'Clientes', url: '/clientes' },
+          { name: 'Proveedores', url: '/proveedores' },
+          { name: 'Categorías', url: '/categorias' },
+          { name: 'Productos', url: '/productos' },
+          { name: 'Entradas de Inventario', url: '/entradas' },
+          { name: 'Salidas de Inventario', url: '/salidas' },
+          { name: 'Ubicación', url: '/ubicacion' },
+          { name: 'Orden Final', url: '/ordenfinal' },
+          { name: 'Detalle Pedido', url: '/detallepedido' }
+        ];
+
+        function filterRoutes() {
+          const input = document.getElementById('searchInput');
+          const query = input.value.toLowerCase();
+          const results = document.getElementById('searchResults');
+          results.innerHTML = '';
+
+          if (query.length === 0) {
+            results.style.display = 'none';
+            return;
+          }
+
+          const filtered = routes.filter(r => r.name.toLowerCase().includes(query));
+          filtered.forEach(r => {
+            const item = document.createElement('a');
+            item.href = r.url;
+            item.className = 'list-group-item list-group-item-action';
+            item.textContent = r.name;
+            results.appendChild(item);
+          });
+
+          results.style.display = filtered.length > 0 ? 'block' : 'none';
+        }
+
+        document.addEventListener('click', function (e) {
+          const input = document.getElementById('searchInput');
+          const results = document.getElementById('searchResults');
+          setTimeout(() => {
+            if (!input.contains(e.target) && !results.contains(e.target)) {
+              results.style.display = 'none';
+            }
+          }, 150);
+        });
+    </script>
+</div>
 </body>
 </html>

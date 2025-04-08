@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{layout::head}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Proveedores</title>
+</head>
+<body class="bg-light">
+<nav th:insert="~{layout::navbar}"></nav>
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h1 class="text-center">SALIDAS DE INVENTARIO</h1>
+
+        <form th:action="@{/salidas/save}" method="post" th:object="${salida}">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="producto" class="form-label">Producto:</label>
+                    <select id="producto" name="producto" th:field="*{producto}" class="form-select" required>
+                        <option th:each="prod : ${productos}" th:value="${prod.productoid}" th:text="${prod.nombre}"></option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="usuario" class="form-label">Usuario:</label>
+                    <select id="usuario" name="usuario" class="form-select" required>
+                        <option th:each="user : ${usuarios}" th:value="${user.usuarioid}" th:text="${user.nombre}"></option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="motivo" class="form-label">Motivo:</label>
+                    <select id="motivo" th:field="*{motivo}" class="form-select" required>
+                        <option value="Venta">Venta</option>
+                        <option value="Devolucion">Devolución</option>
+                        <option value="Ajuste">Ajuste</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="cantidad" class="form-label">Cantidad:</label>
+                    <input id="cantidad" type="number" class="form-control" th:field="*{cantidad}" required />
+                </div>
+            </div>
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">Registrar Salida</button>
+            </div>
+        </form>
+
+        <h2 class="text-center mt-4">Historial de Salidas</h2>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Producto</th>
+                <th>Usuario</th>
+                <th>Motivo</th>
+                <th>Cantidad</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="s : ${salidas}">
+                <td th:text="${s.salidaid}"></td>
+                <td th:text="${s.producto.nombre}"></td>
+                <td th:text="${s.usuario.nombre}"></td>
+                <td th:text="${s.motivo}"></td>
+                <td th:text="${s.cantidad}"></td>
+                <td th:text="${s.fecha}"></td>
+                <td>
+                    <a class="btn btn-warning btn-sm" th:href="@{/salidas/edit/{id}(id=${s.salidaid})}">Editar</a>
+                    <a class="btn btn-danger btn-sm" th:href="@{/salidas/eliminar/{id}(id=${s.salidaid})}" onclick="return confirm('¿Seguro que deseas eliminar esta salida?');">Eliminar</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div th:replace="~{layout :: search-script}"></div>
+</body>
+</html>
