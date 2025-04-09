@@ -14,14 +14,14 @@
       <div class="row mb-3">
         <div class="col-md-4">
           <label for="ordenfinalid" class="form-label">Orden Final:</label>
-          <select id="ordenfinalid" class="form-select" th:field="*{ordenfinal}" required>
-            <option th:each="o : ${ordenes}" th:value="${o}" th:text="${o.ordenfinalid}">Orden</option>
+          <select id="ordenfinalid" class="form-select" th:field="*{ordenfinal.ordenfinalid}" required>
+            <option th:each="o : ${ordenes}" th:value="${o.ordenfinalid}" th:text="${o.ordenfinalid}">Orden</option>
           </select>
         </div>
         <div class="col-md-4">
           <label for="productoid" class="form-label">Producto:</label>
-          <select id="productoid" class="form-select" th:field="*{producto}" required>
-            <option th:each="p : ${productos}" th:value="${p}" th:text="${p.nombre}">Producto</option>
+          <select id="productoid" class="form-select" th:field="*{producto.productoid}" required>
+            <option th:each="p : ${productos}" th:value="${p.productoid}" th:text="${p.nombre}">Producto</option>
           </select>
         </div>
         <div class="col-md-2">

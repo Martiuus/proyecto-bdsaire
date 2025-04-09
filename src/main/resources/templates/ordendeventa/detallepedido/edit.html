@@ -15,28 +15,38 @@
       <form th:action="@{/detallepedido/update}" method="post" th:object="${detalle}" class="row g-3">
         <input type="hidden" th:field="*{detallepedidoid}" />
 
+        <!-- ORDEN FINAL -->
         <div class="col-md-6">
           <label for="ordenfinalid" class="form-label">Orden Final:</label>
-          <select id="ordenfinalid" name="ordenfinalid" class="form-select">
-            <option th:each="o : ${ordenes}" th:value="${o.ordenfinalid}" th:text="${o.ordenfinalid}" th:selected="${detalle.ordenfinal.ordenfinalid == o.ordenfinalid}"></option>
+          <select id="ordenfinalid" class="form-select" th:field="*{ordenfinal.ordenfinalid}">
+            <option th:each="o : ${ordenes}"
+                    th:value="${o.ordenfinalid}"
+                    th:text="${o.ordenfinalid}"
+                    th:selected="${detalle.ordenfinal.ordenfinalid == o.ordenfinalid}"></option>
           </select>
         </div>
 
+        <!-- PRODUCTO -->
         <div class="col-md-6">
           <label for="productoid" class="form-label">Producto:</label>
-          <select id="productoid" name="productoid" class="form-select">
-            <option th:each="p : ${productos}" th:value="${p.productoid}" th:text="${p.nombre}" th:selected="${detalle.producto.productoid == p.productoid}"></option>
+          <select id="productoid" class="form-select" th:field="*{producto.productoid}">
+            <option th:each="p : ${productos}"
+                    th:value="${p.productoid}"
+                    th:text="${p.nombre}"
+                    th:selected="${detalle.producto.productoid == p.productoid}"></option>
           </select>
         </div>
 
+        <!-- CANTIDAD -->
         <div class="col-md-6">
           <label for="cantidad" class="form-label">Cantidad:</label>
-          <input type="number" class="form-control" th:field="*{cantidad}" required />
+          <input id="cantidad" type="number" class="form-control" th:field="*{cantidad}" required />
         </div>
 
+        <!-- PRECIO -->
         <div class="col-md-6">
           <label for="precio" class="form-label">Precio:</label>
-          <input type="number" class="form-control" th:field="*{precio}" step="0.01" required />
+          <input id="precio" type="number" class="form-control" th:field="*{precio}" step="0.01" required />
         </div>
 
         <div class="col-12 text-end">
